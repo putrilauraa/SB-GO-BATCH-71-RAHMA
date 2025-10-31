@@ -8,7 +8,14 @@ import (
 func SetupRouter(bioskopCtrl *controllers.BioskopController) *gin.Engine {
 	r := gin.Default()
 
-	r.POST("/bioskop", bioskopCtrl.CreateBioskop)
+	bioskopAPI := r.Group("/bioskop")
+	{
+		bioskopAPI.POST("", bioskopCtrl.CreateBioskop)
+		bioskopAPI.GET("", bioskopCtrl.GetBioskops)
+		bioskopAPI.GET("/:id", bioskopCtrl.GetBioskopByID)
+		bioskopAPI.PUT("/:id", bioskopCtrl.UpdateBioskop)
+		bioskopAPI.DELETE("/:id", bioskopCtrl.DeleteBioskop)
+	}
 
 	return r
 }
