@@ -3,19 +3,26 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"log"
+	"os"
+	"strconv"
 
 	_ "github.com/lib/pq"
 )
 
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "postgres"
-	password = "12345"
-	dbname   = "bioskop_db"
-)
-
 func ConnectDatabase() *sql.DB {
+	host := os.Getenv("DB_HOST")
+	portStr := os.Getenv("DB_PORT")
+	user := os.Getenv("DB_USER")
+	password := os.Getenv("DB_PASSWORD")
+	dbname := os.Getenv("DB_NAME")
+	
+	port, err := strconv.Atoi(portStr)
+	if err != nil {
+		log.Printf("Invalid port (%s), using default 5432\n", portStr)
+		port = 5432 
+	}
+
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
 
