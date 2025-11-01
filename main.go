@@ -5,7 +5,7 @@ import (
 	"SB-GO-BATCH-71-RAHMA/database"
 	"SB-GO-BATCH-71-RAHMA/routers"
 	"log"
-
+	"os"
 	"github.com/joho/godotenv"
 )
 
@@ -21,6 +21,13 @@ func main() {
 
 	r := routers.SetupRouter(&bioskopController)
 
-	log.Println("Server running on port :8080")
-	r.Run(":8080")
+	port := os.Getenv("PORT")
+	
+	if port == "" {
+		port = "8080"
+	}
+
+	log.Println("Server berjalan di port : " + port)
+	
+	r.Run(":" + port)
 }
